@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Paintings.Data;
 using Paintings.Models;
+using Paintings.Models.ViewModels;
 
 namespace Paintings.Controllers
 {
@@ -64,14 +66,36 @@ public ActionResult Create()
         // POST: Paintings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Painting painting)
+        public async Task<ActionResult> Create(PaintingViewModel paintingViewModel)
         {
+
             try
             {
                 var user = await GetCurrentUserAsync();
-                painting.ApplicationUserId = user.Id;
+                var paintingInstance = new Painting
+                {
 
-                _context.Painting.Add(painting);
+                    Title = paintingViewModel.Title,
+                    MediumUsed = paintingViewModel.MediumUsed,
+
+                    GalleryId = paintingViewModel.GalleryId,
+                    Price = paintingViewModel.Price,
+                    IsSold = paintingViewModel.IsSold,
+                    ApplicationUserId = user.Id
+                };
+
+
+                _context.Painting.Add(paintingInstance);
+
+                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
+              
+                var fileName = Guid.NewGuid().ToString() + paintingViewModel.File.FileName;
+              
+                using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                {
+                    await paintingViewModel.File.CopyToAsync(fileStream);
+                }
+             
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));

@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿
+@using Microsoft.AspNetCore.Identity
+
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,32 +22,50 @@
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Galleries</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Paintings" asp-action="Index">Works</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="cart" asp-action="privacy">cart</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @if (!SignInManager.IsSignedIn(User))
+        {
+            <h1 style="margin:0 auto; text-align:center;">Coffey May Fine Art</h1>
+            <div style="display:flex;flex-direction:row;justify-content:space-evenly;" class="text-center">
 
+                
+                    <a asp-area="Identity" asp-page="/Account/AdminLogin">Admin Login</a>
+               
+
+
+                <a asp-area="Identity" asp-page="/Account/Login">Customer Login</a>
+
+
+            </div>
+        }
+        else if (SignInManager.IsSignedIn(User))
+        {
+
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Galleries</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Paintings" asp-action="Index">Works</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="cart" asp-action="privacy">cart</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }
     </header>
 
-   
 
-    <div >
+
+    <div>
 
         <main role="main" class="pb-3">
             @RenderBody()

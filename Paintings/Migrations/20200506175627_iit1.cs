@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Paintings.Migrations
 {
-    public partial class init : Migration
+    public partial class iit1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,6 @@ namespace Paintings.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
@@ -156,28 +155,55 @@ namespace Paintings.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Gallery",
+                columns: table => new
+                {
+                    GalleryId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gallery", x => x.GalleryId);
+                    table.ForeignKey(
+                        name: "FK_Gallery_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Painting",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    PaintingId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: false),
-                    MudiumUsed = table.Column<string>(nullable: false),
+                    MediumUsed = table.Column<string>(nullable: false),
                     ImagePath = table.Column<string>(nullable: true),
-                    LocationId = table.Column<int>(nullable: false),
+                    GalleryId = table.Column<int>(nullable: true),
                     Price = table.Column<int>(nullable: false),
                     IsSold = table.Column<bool>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Painting", x => x.Id);
+                    table.PrimaryKey("PK_Painting", x => x.PaintingId);
                     table.ForeignKey(
                         name: "FK_Painting_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Painting_Gallery_GalleryId",
+                        column: x => x.GalleryId,
+                        principalTable: "Gallery",
+                        principalColumn: "GalleryId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -220,9 +246,19 @@ namespace Paintings.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Gallery_ApplicationUserId",
+                table: "Gallery",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Painting_ApplicationUserId",
                 table: "Painting",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Painting_GalleryId",
+                table: "Painting",
+                column: "GalleryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -247,6 +283,9 @@ namespace Paintings.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Gallery");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -10,8 +10,8 @@ using Paintings.Data;
 namespace Paintings.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200505140006_ini3")]
-    partial class ini3
+    [Migration("20200506181735_init19")]
+    partial class init19
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -229,7 +229,7 @@ namespace Paintings.Migrations
 
             modelBuilder.Entity("Paintings.Models.Gallery", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("GalleryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -246,16 +246,40 @@ namespace Paintings.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("GalleryId");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Gallery");
                 });
 
+            modelBuilder.Entity("Paintings.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Order");
+                });
+
             modelBuilder.Entity("Paintings.Models.Painting", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PaintingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -273,12 +297,12 @@ namespace Paintings.Migrations
                     b.Property<bool>("IsSold")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MudiumUsed")
+                    b.Property<string>("MediumUsed")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -287,11 +311,13 @@ namespace Paintings.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("PaintingId");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("GalleryId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Painting");
                 });
@@ -356,6 +382,15 @@ namespace Paintings.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Paintings.Models.Order", b =>
+                {
+                    b.HasOne("Paintings.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Orders")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Paintings.Models.Painting", b =>
                 {
                     b.HasOne("Paintings.Models.ApplicationUser", "ApplicationUser")
@@ -367,6 +402,10 @@ namespace Paintings.Migrations
                     b.HasOne("Paintings.Models.Gallery", null)
                         .WithMany("paintings")
                         .HasForeignKey("GalleryId");
+
+                    b.HasOne("Paintings.Models.Order", null)
+                        .WithMany("paintings")
+                        .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618
         }

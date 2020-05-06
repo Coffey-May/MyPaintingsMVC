@@ -8,7 +8,8 @@ namespace Paintings.Models
 {
     public class Order
     {
-        public int Id { get; set; }
+        [Key]
+        public int OrderId { get; set; }
         public bool IsComplete { get; set; }
         public DateTime DateTime { get; set; }
         public List<Painting> paintings { get; set; }

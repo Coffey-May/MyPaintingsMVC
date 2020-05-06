@@ -10,7 +10,8 @@ namespace Paintings.Models
 
     {
         [Required]
-        public int Id { get; set; }
+        [Key]
+        public int GalleryId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

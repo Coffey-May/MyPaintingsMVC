@@ -11,6 +11,11 @@ namespace Paintings.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public List<Painting> Paintings { get; set; }
+       
+
+        public virtual List<Order> Orders { get; set; }
+
+      
 
     }
 }

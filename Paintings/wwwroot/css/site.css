@@ -26,6 +26,13 @@ a {
   
 }
 
+
+/*.galView {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}*/
 /* Sticky footer styles
 -------------------------------------------------- */
 /*html {
@@ -35,9 +42,6 @@ a {
     background-repeat:no-repeat;
   
 }*/
-
-
-
 @media (min-width: 768px) {
     html {
         font-size: 16px;
@@ -122,6 +126,8 @@ display:none;
 }
 
 
+
+
 body {
     background-image: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)), url('../images/pbrooklyndiner.jpeg');
     background-size: cover;
@@ -185,3 +191,84 @@ body {
         font-size: 11px
     }
 }
+
+h1, h2, h3, p, a, h4, td, th {
+    -webkit-animation: color-change 19s infinite;
+    -moz-animation: color-change 19s infinite;
+    -o-animation: color-change 19s infinite;
+
+    animation: color-change 19s infinite;
+}
+
+@-webkit-keyframes color-change {
+    0% {
+        color: rgb(255, 241, 253);
+    }
+
+    50% {
+        color: rgb(233, 255, 235);
+    }
+
+    100% {
+        color: rgb(230, 241, 255);
+    }
+}
+
+@-moz-keyframes color-change {
+    0% {
+        color: rgb(255, 241, 253);
+    }
+
+    50% {
+        color: rgb(233, 255, 235);
+    }
+
+    100% {
+        color: rgb(230, 241, 255);
+    }
+}
+
+@-ms-keyframes color-change {
+    0% {
+        color: rgb(255, 241, 253);
+    }
+
+    50% {
+        color: rgb(233, 255, 235);
+    }
+
+    100% {
+        color: rgb(230, 241, 255);
+    }
+}
+
+@-o-keyframes color-change {
+    0% {
+        color: rgb(255, 241, 253);
+    }
+
+    50% {
+        color: rgb(233, 255, 235);
+    }
+
+    100% {
+        color: rgb(230, 241, 255);
+    }
+}
+
+@keyframes color-change {
+    0% {
+        color: rgb(255, 241, 253);
+    }
+
+    50% {
+        color: rgb(233, 255, 235);
+    }
+
+    100% {
+        color: rgb(230, 241, 255);
+    }
+}
+ 
+    
+

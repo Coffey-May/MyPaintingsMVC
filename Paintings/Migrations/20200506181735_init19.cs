@@ -1,31 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Paintings.Migrations
 {
-    public partial class ini3 : Migration
+    public partial class init19 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "GalleryId",
+                name: "OrderId",
                 table: "Painting",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Gallery",
+                name: "Order",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    OrderId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    Address = table.Column<string>(nullable: false),
+                    IsComplete = table.Column<bool>(nullable: false),
+                    DateTime = table.Column<DateTime>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Gallery", x => x.Id);
+                    table.PrimaryKey("PK_Order", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Gallery_AspNetUsers_ApplicationUserId",
+                        name: "FK_Order_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -33,39 +34,39 @@ namespace Paintings.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Painting_GalleryId",
+                name: "IX_Painting_OrderId",
                 table: "Painting",
-                column: "GalleryId");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Gallery_ApplicationUserId",
-                table: "Gallery",
+                name: "IX_Order_ApplicationUserId",
+                table: "Order",
                 column: "ApplicationUserId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Painting_Gallery_GalleryId",
+                name: "FK_Painting_Order_OrderId",
                 table: "Painting",
-                column: "GalleryId",
-                principalTable: "Gallery",
-                principalColumn: "Id",
+                column: "OrderId",
+                principalTable: "Order",
+                principalColumn: "OrderId",
                 onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Painting_Gallery_GalleryId",
+                name: "FK_Painting_Order_OrderId",
                 table: "Painting");
 
             migrationBuilder.DropTable(
-                name: "Gallery");
+                name: "Order");
 
             migrationBuilder.DropIndex(
-                name: "IX_Painting_GalleryId",
+                name: "IX_Painting_OrderId",
                 table: "Painting");
 
             migrationBuilder.DropColumn(
-                name: "GalleryId",
+                name: "OrderId",
                 table: "Painting");
         }
     }

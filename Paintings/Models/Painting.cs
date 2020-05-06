@@ -9,6 +9,7 @@ namespace Paintings.Models
     public class Painting
     {
         [Required]
+        [Key]
         public int PaintingId { get; set; }
 
         [Required]
@@ -18,7 +19,8 @@ namespace Paintings.Models
         public string MediumUsed { get; set; }
 
         public string ImagePath { get; set; }
-        public int LocationId { get; set; }
+        
+        public int? GalleryId { get; set; }
         public int Price { get; set; }
 
         public bool IsSold { get; set; }

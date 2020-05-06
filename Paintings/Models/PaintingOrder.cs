@@ -8,7 +8,8 @@ namespace Paintings.Models
 {
     public class PaintingOrder
     {
-        public int Id { get; set; }
+        [Key]
+        public int PaintingOrderId { get; set; }
         public int PaintingId { get; set; }
         public int OrderId { get; set; }
 

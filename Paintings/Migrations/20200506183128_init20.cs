@@ -2,7 +2,7 @@
 
 namespace Paintings.Migrations
 {
-    public partial class init3 : Migration
+    public partial class init20 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

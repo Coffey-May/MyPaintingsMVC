@@ -2,33 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Paintings.Data;
 using Paintings.Models;
 
 namespace Paintings.Controllers
 {
+    [Authorize]
     public class GalleryController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public GalleryController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
+
         // GET: Gallery
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var user = await GetCurrentUserAsync();
+            var galleries = await _context.Gallery
+                .Where(g => g.ApplicationUserId == user.Id)
+                .ToListAsync();
+            return View(galleries);
         }
 
         // GET: Gallery/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var gallery = await _context.Gallery
+                  .Include(g => g.ApplicationUser)
+                  .FirstOrDefaultAsync(g => g.GalleryId == id);
+            if (gallery == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return View(gallery);
         }
 
         // GET: Gallery/Create
@@ -40,11 +59,17 @@ namespace Paintings.Controllers
         // POST: Gallery/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(Gallery gallery)
         {
             try
             {
                 // TODO: Add insert logic here
+
+                var user = await GetCurrentUserAsync();
+               gallery.ApplicationUserId = user.Id;
+
+                _context.Gallery.Add(gallery);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -55,18 +80,30 @@ namespace Paintings.Controllers
         }
 
         // GET: Gallery/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var gallery = await _context.Gallery.FirstOrDefaultAsync(g => g.GalleryId == id);
+            var loggedInUser = await GetCurrentUserAsync();
+
+            if (gallery.ApplicationUserId != loggedInUser.Id)
+            {
+                return NotFound();
+            }
+            return View(gallery);
         }
 
         // POST: Gallery/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Gallery gallery)
         {
             try
             {
+                var user = await GetCurrentUserAsync();
+                gallery.ApplicationUserId = user.Id;
+
+                _context.Gallery.Update(gallery);
+                await _context.SaveChangesAsync();
                 // TODO: Add update logic here
 
                 return RedirectToAction(nameof(Index));
@@ -78,26 +115,29 @@ namespace Paintings.Controllers
         }
 
         // GET: Gallery/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var gallery = await _context.Gallery
+                 .Include(g => g.ApplicationUser)
+                 .FirstOrDefaultAsync(g => g.GalleryId == id);
+            if (gallery == null)
+            {
+                return NotFound();
+            }
+
+            return View(gallery);
         }
 
         // POST: Gallery/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var gallery = await _context.Gallery.FindAsync(id);
+            _context.Gallery.Remove(gallery);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }
