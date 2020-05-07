@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +25,8 @@ namespace Paintings.Models.ViewModels
         public IFormFile File { get; set; }
 
         public int? GalleryId { get; set; }
-
+        public Gallery Gallery { get; set; }
+        public List<SelectListItem> GalleryOptions { get; set; }
         public int Price { get; set; }
 
         public bool IsSold { get; set; }

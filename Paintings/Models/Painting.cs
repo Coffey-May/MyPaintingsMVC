@@ -21,6 +21,8 @@ namespace Paintings.Models
         public string ImagePath { get; set; }
         
         public int? GalleryId { get; set; }
+        
+        public Gallery Gallery { get; set; }
         public int Price { get; set; }
 
         public bool IsSold { get; set; }
@@ -28,5 +30,7 @@ namespace Paintings.Models
         [Required]
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+       
+
     }
 }

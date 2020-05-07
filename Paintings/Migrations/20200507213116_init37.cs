@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Paintings.Migrations
 {
-    public partial class iit1 : Migration
+    public partial class init37 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -162,6 +162,7 @@ namespace Paintings.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: false),
+                    PaintingId = table.Column<int>(nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -176,6 +177,57 @@ namespace Paintings.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentType",
+                columns: table => new
+                {
+                    PaymentTypeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(maxLength: 55, nullable: false),
+                    AccountNumber = table.Column<string>(maxLength: 20, nullable: false),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentType", x => x.PaymentTypeId);
+                    table.ForeignKey(
+                        name: "FK_PaymentType_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsComplete = table.Column<bool>(nullable: false),
+                    DateTime = table.Column<DateTime>(nullable: false),
+                    PaintingId = table.Column<int>(nullable: false),
+                    PaymentTypeId = table.Column<int>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Order_PaymentType_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentType",
+                        principalColumn: "PaymentTypeId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Painting",
                 columns: table => new
                 {
@@ -187,7 +239,8 @@ namespace Paintings.Migrations
                     GalleryId = table.Column<int>(nullable: true),
                     Price = table.Column<int>(nullable: false),
                     IsSold = table.Column<bool>(nullable: false),
-                    ApplicationUserId = table.Column<string>(nullable: false)
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    OrderId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,6 +257,45 @@ namespace Paintings.Migrations
                         principalTable: "Gallery",
                         principalColumn: "GalleryId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Painting_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaintingOrder",
+                columns: table => new
+                {
+                    PaintingOrderId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaintingId = table.Column<int>(nullable: false),
+                    OrderId = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaintingOrder", x => x.PaintingOrderId);
+                    table.ForeignKey(
+                        name: "FK_PaintingOrder_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaintingOrder_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaintingOrder_Painting_PaintingId",
+                        column: x => x.PaintingId,
+                        principalTable: "Painting",
+                        principalColumn: "PaintingId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -251,6 +343,16 @@ namespace Paintings.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_ApplicationUserId",
+                table: "Order",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_PaymentTypeId",
+                table: "Order",
+                column: "PaymentTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Painting_ApplicationUserId",
                 table: "Painting",
                 column: "ApplicationUserId");
@@ -259,6 +361,31 @@ namespace Paintings.Migrations
                 name: "IX_Painting_GalleryId",
                 table: "Painting",
                 column: "GalleryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Painting_OrderId",
+                table: "Painting",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaintingOrder_ApplicationUserId",
+                table: "PaintingOrder",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaintingOrder_OrderId",
+                table: "PaintingOrder",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaintingOrder_PaintingId",
+                table: "PaintingOrder",
+                column: "PaintingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentType_UserId",
+                table: "PaymentType",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -279,13 +406,22 @@ namespace Paintings.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Painting");
+                name: "PaintingOrder");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Painting");
+
+            migrationBuilder.DropTable(
                 name: "Gallery");
+
+            migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "PaymentType");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Paintings.Data;
 using Paintings.Models;
@@ -60,7 +61,12 @@ namespace Paintings.Controllers
 // GET: Paintings/Create
 public ActionResult Create()
         {
-            return View();
+
+            var allGalleries = _context.Gallery
+                .Select(g => new SelectListItem() { Text = g.Name, Value = g.GalleryId.ToString() }).ToList();
+            var viewModel = new PaintingViewModel();
+            viewModel.GalleryOptions = allGalleries;
+            return View(viewModel);
         }
 
         // POST: Paintings/Create
@@ -72,20 +78,6 @@ public ActionResult Create()
             try
             {
                 var user = await GetCurrentUserAsync();
-                var paintingInstance = new Painting
-                {
-
-                    Title = paintingViewModel.Title,
-                    MediumUsed = paintingViewModel.MediumUsed,
-
-                    GalleryId = paintingViewModel.GalleryId,
-                    Price = paintingViewModel.Price,
-                    IsSold = paintingViewModel.IsSold,
-                    ApplicationUserId = user.Id
-                };
-
-
-                _context.Painting.Add(paintingInstance);
 
                 var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
               
@@ -95,12 +87,25 @@ public ActionResult Create()
                 {
                     await paintingViewModel.File.CopyToAsync(fileStream);
                 }
-             
+                var paintingInstance = new Painting
+                {
+
+                    Title = paintingViewModel.Title,
+                    MediumUsed = paintingViewModel.MediumUsed,
+                    ImagePath = fileName,
+                    GalleryId = paintingViewModel.GalleryId,
+                    Price = paintingViewModel.Price,
+                    IsSold = paintingViewModel.IsSold,
+                    ApplicationUserId = user.Id
+                };
+              
+
+                _context.Painting.Add(paintingInstance);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }

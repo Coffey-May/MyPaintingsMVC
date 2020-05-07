@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Paintings.Models;
+using Paintings.Models.OrderViewModels;
 
 namespace Paintings.Data
 {
@@ -16,6 +17,11 @@ namespace Paintings.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; } 
         public DbSet<Painting> Painting { get; set; }
         public DbSet<Gallery> Gallery { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<PaintingOrder> PaintingOrder { get; set; }
+        public DbSet<PaymentType> PaymentType { get; set; }
+        public DbSet<Paintings.Models.OrderViewModels.OrderDetailViewModel> OrderDetailViewModel { get; set; }
+       
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
@@ -31,7 +37,7 @@ namespace Paintings.Data
         //            GalleryId = 1,
         //            IsSold = true,
         //            ApplicationUserId = user.Id,
-                   
+
         //        }
         //    );
         //}

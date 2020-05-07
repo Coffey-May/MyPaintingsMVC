@@ -1,10 +1,3 @@
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.csproj.CoreCompileInputs.cache
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.RazorAssemblyInfo.cache
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.RazorAssemblyInfo.cs
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.AssemblyInfoInputs.cache
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.AssemblyInfo.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\Coffey\source\repos\Paintings\Paintings\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\Coffey\source\repos\Paintings\Paintings\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
@@ -132,6 +125,13 @@ C:\Users\Coffey\source\repos\Paintings\Paintings\bin\Debug\netcoreapp3.1\runtime
 C:\Users\Coffey\source\repos\Paintings\Paintings\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Coffey\source\repos\Paintings\Paintings\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\Coffey\source\repos\Paintings\Paintings\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.csproj.CoreCompileInputs.cache
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.RazorAssemblyInfo.cache
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.RazorAssemblyInfo.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.AssemblyInfoInputs.cache
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.AssemblyInfo.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.TagHelpers.input.cache
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.TagHelpers.output.cache
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.RazorCoreGenerate.cache
@@ -170,3 +170,6 @@ C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\staticw
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.dll
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.pdb
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.genruntimeconfig.cache
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.csprojAssemblyReference.cache
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Index.cshtml.g.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Details.cshtml.g.cs
