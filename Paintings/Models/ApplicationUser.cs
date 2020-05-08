@@ -15,7 +15,7 @@ namespace Paintings.Models
        
 
         public virtual List<Order> Orders { get; set; }
-        public virtual List<PaymentType> PaymentTypes { get; set; }
+       
 
 
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Shopping Cart Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,6 +12,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsComplete)
             </th>
@@ -21,12 +24,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationUserId)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaintingId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentType)
-            </th>
+            @*<th>
+            @Html.DisplayNameFor(model => model.PaintingOrder.PaintingId)
+        </th>*@
+
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationUser)
             </th>
@@ -37,6 +38,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.IsComplete)
             </td>
             <td>
@@ -45,12 +49,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ApplicationUserId)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaintingId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentType.AccountNumber)
-            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.PaintingOrder.PaintingId)
+        </td>*@
+
             <td>
                 @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
             </td>

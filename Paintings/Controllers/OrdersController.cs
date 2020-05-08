@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Paintings.Data;
 using Paintings.Models;
@@ -29,7 +30,7 @@ namespace Paintings.Controllers
         {
             var user = await GetCurrentUserAsync();
             var applicationDbContext = _context.Order
-                .Include(o => o.PaymentType)
+                
                 .Include(o => o.ApplicationUser)
                 .Where(o => o.ApplicationUserId == user.Id);
             return View(await applicationDbContext.ToListAsync());
@@ -43,7 +44,7 @@ namespace Paintings.Controllers
 
             var incompleteOrder = await _context.Order
                 .Where(o => o.ApplicationUserId == user.Id && o.OrderId == id)
-                    .Include(o => o.PaymentType)
+                  
                     .Include(o => o.ApplicationUser)
                     .Include(o => o.PaintingOrder)
                         .ThenInclude(op => op.Painting)
@@ -54,7 +55,7 @@ namespace Paintings.Controllers
                 orderDetailViewModel.LineItems = incompleteOrder.PaintingOrder.GroupBy(op => op.PaintingId)
                         .Select(p => new OrderLineItem
                         {
-                            Cost = p.Sum(c => c.Painting.Price),
+                          
 
                             Painting = p.FirstOrDefault().Painting,
                         });
@@ -75,24 +76,63 @@ namespace Paintings.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            return View();
+                return View();
         }
 
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(int id, PaintingOrder paintingOrder)
         {
             try
             {
-                // TODO: Add insert logic here
+                var user = await GetCurrentUserAsync();
+                var userOrder = _context.Order.FirstOrDefault(o => o.ApplicationUser.Id == user.Id);
+                if (userOrder == null)
+                {
+                    //creates order object
+                    var newOrder = new Order
+                    {
+                        IsComplete = false,
+                        DateTime = DateTime.Now,
+                        ApplicationUserId = user.Id
+                    };
+                    _context.Order.Add(newOrder);
+                    await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                    //pulls id from newly created Order to plug into OrderProduct object 
+                    int orderId = newOrder.OrderId;
+
+                    //adds product to order by creating OrderProduct object
+                    var newPainting = new PaintingOrder
+                    {
+                        OrderId = orderId,
+                        PaintingId = id
+                    };
+                    _context.PaintingOrder.Add(newPainting);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "Orders", new {id = orderId });
+
+                }
+                else
+                {
+
+                    //creates just the order product if an order already exists
+                    var newPaintingOrder = new PaintingOrder
+                    {
+                        OrderId = userOrder.OrderId,
+                        PaintingId = id
+                    };
+                    _context.PaintingOrder.Add(newPaintingOrder);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "Orders", new { id = newPaintingOrder.OrderId });
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return (NotFound());
             }
+
         }
 
         // GET: Orders/Edit/5

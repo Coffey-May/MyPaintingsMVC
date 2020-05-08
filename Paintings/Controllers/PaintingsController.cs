@@ -28,13 +28,36 @@ namespace Paintings.Controllers
         }
 
         // GET: Paintings
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searchString)
         {
-            var user = await GetCurrentUserAsync();
-            var paintings = await _context.Painting
-                .Where(p => p.ApplicationUserId == user.Id)
-                .ToListAsync();           
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                var user = await GetCurrentUserAsync();
+                var paintings = await _context.Painting
+                    .Where(p => p.ApplicationUserId == user.Id)
+                    .ToListAsync();
                 return View(paintings);
+            }
+            else if (!TitleExists(searchString))
+            {
+                var paintings = await _context.Painting
+                    //.Include(p => p.Title)
+                    .Include(p => p.ApplicationUser)
+                    .Where(p => p.Title.Contains(searchString)).ToListAsync();
+
+                return View(paintings);
+            }
+            //If searchstring does match an existing city, it pulls all products matching that city.
+            //Using Equals instead of Contains as the helper method requires a match, not a partial
+            else
+            {
+                var paintings = await _context.Painting
+                    //.Include(p => p.Title)
+                    .Include(p => p.ApplicationUser)
+                    .Where(p => p.Title.Equals(searchString)).ToListAsync();
+
+                return View(paintings);
+            }
         }
 
         // GET: Paintings/Details/5
@@ -181,6 +204,10 @@ public ActionResult Create()
             //{
             //    return View();
             //}
+        }
+        private bool TitleExists(string title)
+        {
+            return _context.Painting.Any(p => p.Title.Equals(title));
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);

@@ -269,6 +269,9 @@ h1, h2, h3, p, a, h4, td, th {
         color: rgb(230, 241, 255);
     }
 }
- 
-    
 
+.searchy{
+    color: white;
+    background-color: gray;
+    border-radius:15%;
+}

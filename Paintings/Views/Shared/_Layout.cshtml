@@ -54,14 +54,24 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Paintings" asp-action="Index">Works</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Details">Cart</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Index">Cart</a>
                             </li>
 
+
                             @*<li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Details">View Cart</a>
-                            </li>*@
+                <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Details">View Cart</a>
+            </li>*@
 
                         </ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                           
+                                @*the name in the input must match the variable name for the controller*@
+                                <form class="searchy" asp-controller="Paintings" asp-action="Index">
+                                    <input class="searchy" type="text" name="searchString" placeholder="Search Paintings" aria-label="Search" asp-controller="Products" asp-action="Index">
+                                </form>
+                         
+                        }
                     </div>
                 </div>
             </nav>

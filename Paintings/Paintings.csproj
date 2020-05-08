@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-Paintings-035599A7-FA2B-4D61-9267-80579BBA8A32</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200508143919_init4.cs" />
+    <Compile Remove="Migrations\20200508143919_init4.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />

@@ -1,18 +1,73 @@
-﻿@model Paintings.Models.OrderViewModels.OrderDetailViewModel
+﻿
+
+
+@model Paintings.Models.OrderViewModels.OrderDetailViewModel
+
 
 @{
     ViewData["Title"] = "Details";
 }
+<h1>Shopping Cart</h1>
 
-<h1>Details</h1>
-
-<div>
-    <h4>OrderDetailViewModel</h4>
+<div class="orderDetails">
+    <h4>Order # @Html.DisplayFor(model => model.Order.OrderId)</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Order.PaintingOrder)
+        </dt>
+      
+   
+    
+        
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+               Title
+            </th>
+            <th>
+                Medium
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Gallery
+            </th>
+            <th>
+                Total Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*I do not know why I had to add the model reference here*@
+        @foreach (Paintings.Models.OrderViewModels.OrderLineItem item in Model.LineItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Painting.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Painting.MediumUsed)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Painting.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Painting.GalleryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Painting.IsSold)
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>
+

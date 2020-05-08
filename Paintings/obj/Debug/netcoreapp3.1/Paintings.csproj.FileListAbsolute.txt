@@ -150,6 +150,8 @@ C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\V
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Gallery\Index.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Details.cshtml.g.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Index.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Paintings\Create.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Paintings\Delete.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Paintings\Details.cshtml.g.cs
@@ -171,5 +173,3 @@ C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintin
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.pdb
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.genruntimeconfig.cache
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.csprojAssemblyReference.cache
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Index.cshtml.g.cs
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Details.cshtml.g.cs

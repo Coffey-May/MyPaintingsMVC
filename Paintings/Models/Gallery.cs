@@ -16,13 +16,9 @@ namespace Paintings.Models
         public string Name { get; set; }
         [Required]
         public string Address { get; set; }
-        public int? PaintingId { get; set; }
-       
+      
+        public List<Painting> Paintings { get; set; }
 
-        public List<Painting> paintings { get; set; }
-
-        [Required]
-        public string ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+      
     }
 }

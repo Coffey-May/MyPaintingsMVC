@@ -236,20 +236,11 @@ namespace Paintings.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PaintingId")
-                        .HasColumnType("int");
-
                     b.HasKey("GalleryId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Gallery");
                 });
@@ -271,61 +262,11 @@ namespace Paintings.Migrations
                     b.Property<bool>("IsComplete")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PaintingId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PaymentTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("OrderId");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("PaymentTypeId");
-
                     b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("Paintings.Models.OrderViewModels.OrderDetailViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderDetailViewModel");
-                });
-
-            modelBuilder.Entity("Paintings.Models.OrderViewModels.OrderLineItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("Cost")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("OrderDetailViewModelId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PaintingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderDetailViewModelId");
-
-                    b.HasIndex("PaintingId");
-
-                    b.ToTable("OrderLineItem");
                 });
 
             modelBuilder.Entity("Paintings.Models.Painting", b =>
@@ -352,9 +293,6 @@ namespace Paintings.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -368,8 +306,6 @@ namespace Paintings.Migrations
 
                     b.HasIndex("GalleryId");
 
-                    b.HasIndex("OrderId");
-
                     b.ToTable("Painting");
                 });
 
@@ -380,57 +316,19 @@ namespace Paintings.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaintingId")
+                    b.Property<int?>("PaintingId")
                         .HasColumnType("int");
 
                     b.HasKey("PaintingOrderId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("PaintingId");
 
                     b.ToTable("PaintingOrder");
-                });
-
-            modelBuilder.Entity("Paintings.Models.PaymentType", b =>
-                {
-                    b.Property<int>("PaymentTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccountNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(55)")
-                        .HasMaxLength(55);
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("PaymentTypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PaymentType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -484,15 +382,6 @@ namespace Paintings.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Paintings.Models.Gallery", b =>
-                {
-                    b.HasOne("Paintings.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Paintings.Models.Order", b =>
                 {
                     b.HasOne("Paintings.Models.ApplicationUser", "ApplicationUser")
@@ -500,28 +389,6 @@ namespace Paintings.Migrations
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Paintings.Models.PaymentType", "PaymentType")
-                        .WithMany("Orders")
-                        .HasForeignKey("PaymentTypeId");
-                });
-
-            modelBuilder.Entity("Paintings.Models.OrderViewModels.OrderDetailViewModel", b =>
-                {
-                    b.HasOne("Paintings.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-                });
-
-            modelBuilder.Entity("Paintings.Models.OrderViewModels.OrderLineItem", b =>
-                {
-                    b.HasOne("Paintings.Models.OrderViewModels.OrderDetailViewModel", null)
-                        .WithMany("LineItems")
-                        .HasForeignKey("OrderDetailViewModelId");
-
-                    b.HasOne("Paintings.Models.Painting", "Painting")
-                        .WithMany()
-                        .HasForeignKey("PaintingId");
                 });
 
             modelBuilder.Entity("Paintings.Models.Painting", b =>
@@ -533,40 +400,21 @@ namespace Paintings.Migrations
                         .IsRequired();
 
                     b.HasOne("Paintings.Models.Gallery", "Gallery")
-                        .WithMany("paintings")
+                        .WithMany("Paintings")
                         .HasForeignKey("GalleryId");
-
-                    b.HasOne("Paintings.Models.Order", null)
-                        .WithMany("paintings")
-                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Paintings.Models.PaintingOrder", b =>
                 {
-                    b.HasOne("Paintings.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Paintings.Models.Order", "Order")
                         .WithMany("PaintingOrder")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Paintings.Models.Painting", "Painting")
                         .WithMany()
-                        .HasForeignKey("PaintingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Paintings.Models.PaymentType", b =>
-                {
-                    b.HasOne("Paintings.Models.ApplicationUser", "User")
-                        .WithMany("PaymentTypes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PaintingId");
                 });
 #pragma warning restore 612, 618
         }

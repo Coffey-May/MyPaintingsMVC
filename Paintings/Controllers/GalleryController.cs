@@ -29,7 +29,7 @@ namespace Paintings.Controllers
         {
             var user = await GetCurrentUserAsync();
             var galleries = await _context.Gallery
-                .Where(g => g.ApplicationUserId == user.Id)
+                
                 .ToListAsync();
             return View(galleries);
         }
@@ -38,7 +38,7 @@ namespace Paintings.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var gallery = await _context.Gallery
-                  .Include(g => g.ApplicationUser)
+               
                   .FirstOrDefaultAsync(g => g.GalleryId == id);
             if (gallery == null)
             {
@@ -66,7 +66,7 @@ namespace Paintings.Controllers
                 // TODO: Add insert logic here
 
                 var user = await GetCurrentUserAsync();
-               gallery.ApplicationUserId = user.Id;
+         
 
                 _context.Gallery.Add(gallery);
                 await _context.SaveChangesAsync();
@@ -85,10 +85,7 @@ namespace Paintings.Controllers
             var gallery = await _context.Gallery.FirstOrDefaultAsync(g => g.GalleryId == id);
             var loggedInUser = await GetCurrentUserAsync();
 
-            if (gallery.ApplicationUserId != loggedInUser.Id)
-            {
-                return NotFound();
-            }
+         
             return View(gallery);
         }
 
@@ -100,7 +97,7 @@ namespace Paintings.Controllers
             try
             {
                 var user = await GetCurrentUserAsync();
-                gallery.ApplicationUserId = user.Id;
+            
 
                 _context.Gallery.Update(gallery);
                 await _context.SaveChangesAsync();
@@ -118,7 +115,7 @@ namespace Paintings.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var gallery = await _context.Gallery
-                 .Include(g => g.ApplicationUser)
+               
                  .FirstOrDefaultAsync(g => g.GalleryId == id);
             if (gallery == null)
             {

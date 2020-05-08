@@ -7,7 +7,7 @@ namespace Paintings.Models.OrderViewModels
 {
     public class OrderDetailViewModel
     {
-        public int Id { get; set; }
+
         public Order Order { get; set; }
 
         public IEnumerable<OrderLineItem> LineItems { get; set; }
