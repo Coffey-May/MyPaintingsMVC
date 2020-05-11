@@ -1,7 +1,4 @@
-﻿
-
-
-@model Paintings.Models.OrderViewModels.OrderDetailViewModel
+﻿@model Paintings.Models.OrderViewModels.OrderDetailViewModel
 
 
 @{
@@ -46,32 +43,37 @@
         </tr>
     </thead>
     <tbody>
-        @*I do not know why I had to add the model reference here*@
+
         @foreach (Paintings.Models.OrderViewModels.OrderLineItem item in Model.LineItems)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => item.Painting.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Painting.MediumUsed)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Painting.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Painting.GalleryId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Painting.IsSold)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Painting.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Painting.MediumUsed)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Painting.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Painting.GalleryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Painting.IsSold)
+            </td>
 
 
+            <td>
+                <form asp-controller="PaintingOrders" asp-action="Delete" asp-route-Id="@item.Painting.PaintingId" method="post">
+                    <input type="submit" class="btn btn-danger bg-danger border-danger" value="DELETE" />
+                </form>
+            </td>
 
+        </tr>
 
+           
 
-
-            </tr>
         }
     </tbody>
 
@@ -80,6 +82,6 @@
 
 
 
-<form asp-controller="Orders" asp-action="Delete" method="post">
+@*<form asp-controller="Orders" asp-action="Delete" method="post">
     <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
-</form>
+</form>*@

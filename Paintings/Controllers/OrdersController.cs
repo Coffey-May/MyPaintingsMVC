@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -190,67 +191,55 @@ namespace Paintings.Controllers
             return View(order);
         }
 
-
-        // GET: Orders/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        private async void DeletePaintingOrder(int orderId)
         {
-            var item = await _context.PaintingOrder.Include(po => po.Painting).FirstOrDefaultAsync(po => po.PaintingOrderId == id);
-
-            return View(item);
+            var paintingOrders = await _context.PaintingOrder.Where(po => po.OrderId == orderId).ToListAsync();
+            foreach (var po in paintingOrders)
+            {
+                _context.PaintingOrder.Remove(po);
+            }
         }
+
 
         // POST: Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeletePaintingOrder(int id, PaintingOrder paintingOrder)
+        public async Task<ActionResult> Delete()
         {
             try
             {
-                paintingOrder.PaintingOrderId = id;
-                _context.PaintingOrder.Remove(paintingOrder);
+                var user = await GetCurrentUserAsync();
+                var order = await _context.Order
+                   .Where(o => o.ApplicationUserId == user.Id).FirstOrDefaultAsync(o => o.IsComplete == false);
+                if (order == null)
+                {
+                    return RedirectToAction("Index", "Paintings");
+                }
+          
+            
+                DeletePaintingOrders(order.OrderId);
+                _context.Order.Remove(order);
                 await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-
-        // delete for the entire order and all it's corresponding products 
-
-
-        public async Task<ActionResult> CancelOrder(int id)
-        {
-            var item = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
-
-
-
-            return View(item);
-        }
-
-        // POST: Orders/CancelOrder/5
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CancelOrder(int id, PaintingOrder paintingOrder, Order order)
-        {
-            try
-            {
-                var orderToDelete = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
-
-                _context.Order.Remove(orderToDelete);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                //TempData["cancelOrder"] = "Your order has been canceled.";
+                return RedirectToAction("Index", "Paintings");
             }
             catch (Exception ex)
             {
+
                 return View();
             }
         }
+
+        private async void DeletePaintingOrders(int orderId)
+        {
+            var paintingOrders = await _context.PaintingOrder.Where(po => po.OrderId == orderId).ToListAsync();
+            foreach (var po in paintingOrders)
+            {
+                _context.PaintingOrder.Remove(po);
+            }
+        }
+
+
 
 
         private bool OrderExists(int id)

@@ -174,3 +174,5 @@ C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintin
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Delete.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\PaintingOrders\Delete.cshtml.g.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\PaintingOrders\Index.cshtml.g.cs

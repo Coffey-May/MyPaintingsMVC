@@ -2,13 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Paintings.Data;
+using Paintings.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Paintings.Controllers
 {
     public class PaintingOrdersController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public PaintingOrdersController(ApplicationDbContext context, UserManager<ApplicationUser> usermanager)
+        {
+            _userManager = usermanager;
+            _context = context;
+        }
         // GET: PaintingOrders
         public ActionResult Index()
         {
@@ -21,30 +32,53 @@ namespace Paintings.Controllers
             return View();
         }
 
-        // GET: PaintingOrders/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+
 
         // POST: PaintingOrders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(int id)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                var user = await GetCurrentUserAsync();
+                var userCurrentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == null);
+                if (userCurrentOrder != null)
+                {
+                    var newPaintingOrder = new PaintingOrder
+                    {
+                        OrderId = userCurrentOrder.OrderId,
+                        PaintingId = id
+                    };
+                    _context.PaintingOrder.Add(newPaintingOrder);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Orders");
+                }
+                else
+                {
+                    var newOrder = new Order
+                    {
+                        ApplicationUserId = user.Id,
+                        DateTime = DateTime.Now
+                    };
+                    _context.Order.Add(newOrder);
+                    var newPaintingOrder = new PaintingOrder
+                    {
+                        Order = newOrder,
+                        PaintingId = id
+                    };
+                    _context.PaintingOrder.Add(newPaintingOrder);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Orders");
+                }
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
         }
 
-        // GET: PaintingOrders/Edit/5
+        // GET: PaintingOrders/Edit/5 
         public ActionResult Edit(int id)
         {
             return View();
@@ -67,27 +101,24 @@ namespace Paintings.Controllers
             }
         }
 
-        // GET: PaintingOrders/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: PaintingOrders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                var paintingOrder = _context.PaintingOrder.FirstOrDefault(po => po.PaintingId == id);
+                _context.PaintingOrder.Remove(paintingOrder);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Orders");
             }
             catch
             {
                 return View();
             }
         }
+        private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
+
     }
 }

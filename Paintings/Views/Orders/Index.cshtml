@@ -1,4 +1,10 @@
 ﻿@model IEnumerable<Paintings.Models.Order>
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
 
 @{
     ViewData["Title"] = "Index";
@@ -40,18 +46,30 @@
                         </td>
 
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                            @*<a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |*@
+                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a>
+                            @*<a asp-action="Delete" asp-route-id="@item.OrderId">Delete Order</a>*@
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
 
-       
+        @*@if ()
+        {
+
+        }*@
+
+        <form asp-controller="Orders" asp-action="Delete" method="post">
+            <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
+        </form>
+        <hr />
         <form asp-controller="Paintings" asp-action="Index">
             <input type="submit" class="btn btn-outline-info badge-secondary " value="Shop More" />
+        </form>
+        <hr />
+        <form asp-controller="PaintingOrders" asp-action="Index">
+            <input type="submit" class="btn btn-outline-info badge-primary " value="Place Order" />
         </form>
 
     </div>
