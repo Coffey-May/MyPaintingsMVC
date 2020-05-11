@@ -9,7 +9,6 @@ using Paintings.Data;
 using Paintings.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-//using Paintings.Models.ProductViewModels;
 using Microsoft.AspNetCore.Http;
 using System.Runtime.InteropServices.ComTypes;
 using System.IO;
@@ -32,17 +31,13 @@ namespace Paintings.Controllers
         // GET: MyProducts
         public async Task<ActionResult> Index()
         {
-
             var user = await GetCurrentUserAsync();
             var MyProducts = await _context.Painting
                     .Where(p => p.ApplicationUserId == user.Id)
                     .ToListAsync();
 
             return View(MyProducts);
-
-
         }
-
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -51,16 +46,13 @@ namespace Paintings.Controllers
             {
                 return NotFound();
             }
-
             var painting = await _context.Painting
-                
-                .Include(p => p.ApplicationUser)
+                                .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.PaintingId == id);
             if (painting == null)
             {
                 return NotFound();
             }
-
             return View(painting);
         }
 

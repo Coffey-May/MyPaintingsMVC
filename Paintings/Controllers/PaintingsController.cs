@@ -32,27 +32,21 @@ namespace Paintings.Controllers
         {
             if (string.IsNullOrWhiteSpace(searchString))
             {
-                //var user = await GetCurrentUserAsync();
                 var paintings = await _context.Painting
-                    //.Where(p => p.ApplicationUserId == user.Id)
                     .ToListAsync();
                 return View(paintings);
             }
             else if (!TitleExists(searchString))
             {
                 var paintings = await _context.Painting
-                    //.Include(p => p.Title)
                     .Include(p => p.ApplicationUser)
                     .Where(p => p.Title.Contains(searchString)).ToListAsync();
 
                 return View(paintings);
             }
-            //If searchstring does match an existing city, it pulls all products matching that city.
-            //Using Equals instead of Contains as the helper method requires a match, not a partial
             else
             {
                 var paintings = await _context.Painting
-                    //.Include(p => p.Title)
                     .Include(p => p.ApplicationUser)
                     .Where(p => p.Title.Equals(searchString)).ToListAsync();
 
@@ -63,10 +57,6 @@ namespace Paintings.Controllers
         // GET: Paintings/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
             var painting = await _context.Painting
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(p => p.PaintingId == id);
@@ -74,44 +64,37 @@ namespace Paintings.Controllers
             {
                 return NotFound();
             }
-
-
-
             return View(painting);
         }
 
+         // GET: Paintings/Create
+         public ActionResult Create()
+         {
 
-// GET: Paintings/Create
-public ActionResult Create()
-        {
-
-            var allGalleries = _context.Gallery
+             var allGalleries = _context.Gallery
                 .Select(g => new SelectListItem() { Text = g.Name, Value = g.GalleryId.ToString() }).ToList();
-            var viewModel = new PaintingViewModel();
-            viewModel.GalleryOptions = allGalleries;
-            return View(viewModel);
-        }
+             var viewModel = new PaintingViewModel();
+             viewModel.GalleryOptions = allGalleries;
+             return View(viewModel);
+         }
 
-        // POST: Paintings/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(PaintingViewModel paintingViewModel)
-        {
+         // POST: Paintings/Create
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<ActionResult> Create(PaintingViewModel paintingViewModel)
+         {
 
-            try
-            {
-                var user = await GetCurrentUserAsync();
-
-                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
-              
-                var fileName = Guid.NewGuid().ToString() + paintingViewModel.File.FileName;
-              
-                using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
-                {
+             try
+             {
+                 var user = await GetCurrentUserAsync();
+                 var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
+                 var fileName = Guid.NewGuid().ToString() + paintingViewModel.File.FileName;
+                 using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                 {
                     await paintingViewModel.File.CopyToAsync(fileStream);
-                }
-                var paintingInstance = new Painting
-                {
+                 }
+                 var paintingInstance = new Painting
+                 {
 
                     Title = paintingViewModel.Title,
                     MediumUsed = paintingViewModel.MediumUsed,
@@ -120,19 +103,17 @@ public ActionResult Create()
                     Price = paintingViewModel.Price,
                     IsSold = paintingViewModel.IsSold,
                     ApplicationUserId = user.Id
-                };
-              
+                 };
+                 _context.Painting.Add(paintingInstance);
+                 await _context.SaveChangesAsync();
 
-                _context.Painting.Add(paintingInstance);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-        }
+                 return RedirectToAction(nameof(Index));
+                 }
+                 catch (Exception ex)
+                 {
+                 return View();
+             }
+         }
 
         // GET: Paintings/Edit/5
         public async Task<ActionResult> Edit(int id)
@@ -194,16 +175,6 @@ public ActionResult Create()
             _context.Painting.Remove(painting);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-            //try
-            //{
-            //    // TODO: Add delete logic here
-
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
         }
         private bool TitleExists(string title)
         {
