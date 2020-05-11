@@ -3,65 +3,55 @@
 @{
     ViewData["Title"] = "Index";
 }
+    <div class="container">
+        <h1>Your Order</h1>
 
-<h1>Shopping Cart Index</h1>
+        <p>
+            @*<a asp-action="Create">Create New</a>*@
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsComplete)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateTime)
+                    </th>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsComplete)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationUserId)
-            </th>
-            @*<th>
-            @Html.DisplayNameFor(model => model.PaintingOrder.PaintingId)
-        </th>*@
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsComplete)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateTime)
+                        </td>
 
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsComplete)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUserId)
-            </td>
-            @*<td>
-            @Html.DisplayFor(modelItem => item.PaintingOrder.PaintingId)
-        </td>*@
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+       
+        <form asp-controller="Paintings" asp-action="Index">
+            <input type="submit" class="btn btn-outline-info badge-secondary " value="Shop More" />
+        </form>
+
+    </div>

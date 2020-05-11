@@ -16,10 +16,10 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Order.PaintingOrder)
         </dt>
-      
-   
-    
-        
+
+
+
+
     </dl>
 </div>
 
@@ -28,7 +28,7 @@
     <thead class="thead-dark">
         <tr>
             <th>
-               Title
+                Title
             </th>
             <th>
                 Medium
@@ -65,9 +65,21 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Painting.IsSold)
                 </td>
-               
+
+
+
+
+
+
             </tr>
         }
     </tbody>
+
+
 </table>
 
+
+
+<form asp-controller="Orders" asp-action="Delete" method="post">
+    <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
+</form>

@@ -39,7 +39,9 @@ namespace Paintings.Controllers
         {
             var gallery = await _context.Gallery
                
+               
                   .FirstOrDefaultAsync(g => g.GalleryId == id);
+            
             if (gallery == null)
             {
                 return NotFound();

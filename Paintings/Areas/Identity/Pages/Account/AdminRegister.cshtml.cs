@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Paintings.Data;
 using Paintings.Models;
 
 namespace Paintings.Areas.Identity.Pages.Account
@@ -23,18 +24,27 @@ namespace Paintings.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AdminRegisterModel> _logger;
+
+        private readonly ApplicationDbContext _context;
+
         private readonly IEmailSender _emailSender;
 
         public AdminRegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<AdminRegisterModel> logger,
+
+            ApplicationDbContext context,
+
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+
+
+            _context = context;
         }
 
         [BindProperty]
@@ -52,7 +62,10 @@ namespace Paintings.Areas.Identity.Pages.Account
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
-            
+            [Required]
+
+            [Display(Name = "Is Admin")]
+            public string IsAdmin { get; set; } 
            
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
@@ -84,14 +97,15 @@ namespace Paintings.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    LastName = Input.LastName,
+                    IsAdmin = true
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

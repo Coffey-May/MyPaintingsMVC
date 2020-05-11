@@ -42,7 +42,7 @@
 
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
                 <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Galleries</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="Index">Galleries</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -58,21 +58,25 @@
                             </li>
 
 
-                            @*<li class="nav-item">
-                <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Details">View Cart</a>
-            </li>*@
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li >
+                                    @*the name in the input must match the variable name for the controller*@
+                                    <form  asp-controller="Paintings" asp-action="Index">
+                                        <input id="Searchy" type="text" name="searchString" placeholder="Search Paintings" aria-label="Search" asp-controller="Paintings" asp-action="Index">
+                                    </form>
+                                </li>
+
+                            }
+
+
+
+
 
                         </ul>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                           
-                                @*the name in the input must match the variable name for the controller*@
-                                <form class="searchy" asp-controller="Paintings" asp-action="Index">
-                                    <input class="searchy" type="text" name="searchString" placeholder="Search Paintings" aria-label="Search" asp-controller="Products" asp-action="Index">
-                                </form>
-                         
-                        }
+
                     </div>
+               
                 </div>
             </nav>
         }

@@ -29,11 +29,15 @@ namespace Paintings.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
+
             var applicationDbContext = _context.Order
-                
-                .Include(o => o.ApplicationUser)
+
+             .Include(o => o.ApplicationUser)
                 .Where(o => o.ApplicationUserId == user.Id);
+
             return View(await applicationDbContext.ToListAsync());
+
+
         }
 
         // GET: Orders/Details/5
@@ -44,19 +48,17 @@ namespace Paintings.Controllers
 
             var incompleteOrder = await _context.Order
                 .Where(o => o.ApplicationUserId == user.Id && o.OrderId == id)
-                  
+
                     .Include(o => o.ApplicationUser)
                     .Include(o => o.PaintingOrder)
-                        .ThenInclude(op => op.Painting)
+                        .ThenInclude(po => po.Painting)
             .FirstOrDefaultAsync();
             if (incompleteOrder != null)
             {
                 var orderDetailViewModel = new OrderDetailViewModel();
-                orderDetailViewModel.LineItems = incompleteOrder.PaintingOrder.GroupBy(op => op.PaintingId)
+                orderDetailViewModel.LineItems = incompleteOrder.PaintingOrder.GroupBy(po => po.PaintingId)
                         .Select(p => new OrderLineItem
                         {
-                          
-
                             Painting = p.FirstOrDefault().Painting,
                         });
                 orderDetailViewModel.Order = incompleteOrder;
@@ -76,7 +78,7 @@ namespace Paintings.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-                return View();
+            return View();
         }
 
         // POST: Orders/Create
@@ -100,10 +102,10 @@ namespace Paintings.Controllers
                     _context.Order.Add(newOrder);
                     await _context.SaveChangesAsync();
 
-                    //pulls id from newly created Order to plug into OrderProduct object 
+                    //pulls id from newly created Order to plug into PaintingOrder object 
                     int orderId = newOrder.OrderId;
 
-                    //adds product to order by creating OrderProduct object
+                    //adds product to order by creating PaintingOrder object
                     var newPainting = new PaintingOrder
                     {
                         OrderId = orderId,
@@ -111,7 +113,7 @@ namespace Paintings.Controllers
                     };
                     _context.PaintingOrder.Add(newPainting);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", "Orders", new {id = orderId });
+                    return RedirectToAction("Details", "Orders", new { id = orderId });
 
                 }
                 else
@@ -136,42 +138,77 @@ namespace Paintings.Controllers
         }
 
         // GET: Orders/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Order.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", order.ApplicationUserId);
+            return View(order);
         }
 
         // POST: Orders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,DateCreated,DateCompleted,UserId,PaymentTypeId")] Order order)
         {
-            try
+            if (id != order.OrderId)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(order);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!OrderExists(order.OrderId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+          
+            ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", order.ApplicationUserId);
+            return View(order);
         }
 
+
         // GET: Orders/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var item = await _context.PaintingOrder.Include(po => po.Painting).FirstOrDefaultAsync(po => po.PaintingOrderId == id);
+
+            return View(item);
         }
 
         // POST: Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeletePaintingOrder(int id, PaintingOrder paintingOrder)
         {
             try
             {
-                // TODO: Add delete logic here
+                paintingOrder.PaintingOrderId = id;
+                _context.PaintingOrder.Remove(paintingOrder);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -179,6 +216,46 @@ namespace Paintings.Controllers
             {
                 return View();
             }
+        }
+
+
+        // delete for the entire order and all it's corresponding products 
+
+
+        public async Task<ActionResult> CancelOrder(int id)
+        {
+            var item = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
+
+
+
+            return View(item);
+        }
+
+        // POST: Orders/CancelOrder/5
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CancelOrder(int id, PaintingOrder paintingOrder, Order order)
+        {
+            try
+            {
+                var orderToDelete = await _context.Order.FirstOrDefaultAsync(o => o.OrderId == id);
+
+                _context.Order.Remove(orderToDelete);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+
+        private bool OrderExists(int id)
+        {
+            return _context.Order.Any(e => e.OrderId == id);
         }
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }

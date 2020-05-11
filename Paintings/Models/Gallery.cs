@@ -19,6 +19,6 @@ namespace Paintings.Models
       
         public List<Painting> Paintings { get; set; }
 
-      
+        
     }
 }

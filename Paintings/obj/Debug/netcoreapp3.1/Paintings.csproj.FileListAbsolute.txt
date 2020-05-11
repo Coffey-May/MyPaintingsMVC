@@ -137,8 +137,6 @@ C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintin
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.RazorCoreGenerate.cache
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\AdminLogin.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\AdminRegister.cshtml.g.cs
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
-C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
@@ -173,3 +171,6 @@ C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintin
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.pdb
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.genruntimeconfig.cache
 C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Paintings.csprojAssemblyReference.cache
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Views\Orders\Delete.cshtml.g.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
+C:\Users\Coffey\source\repos\Paintings\Paintings\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs

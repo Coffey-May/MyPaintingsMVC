@@ -1,0 +1,49 @@
+﻿@model Paintings.Models.Order
+
+@{
+    ViewData["Title"] = "Delete";
+}
+    <div class="container">
+        <h1>Delete</h1>
+
+        <h3>Are you sure you want to delete this Order?</h3>
+        <div>
+            <h4>Order</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.IsComplete)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.IsComplete)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DateTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateTime)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ApplicationUser)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ApplicationUser.Id)
+                </dd>
+            </dl>
+
+            <form asp-action="CancelOrder">
+                <input type="hidden" asp-for="OrderId" />
+                <input type="submit" value="Delete this Order" class="btn btn-danger" /> |
+                <a asp-action="Index">Back to List</a>
+            </form>
+
+
+            @*<form asp-action="Delete">
+                <input type="hidden" asp-for="PaintingId" />
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                <a asp-action="Index">Back to List</a>
+            </form>*@
+
+
+        </div>
+    </div>
