@@ -8,23 +8,23 @@
     ViewData["Title"] = "Index";
 }
     <div class="container paint-index">
-        <h1>Index</h1>
+        <h1>Painting Catalog</h1>
 
      @*@if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
      {
          <h2>dbhckjsdbcjksdbckjsdbkjsbcdsjkcbj</h2>
      }*@
 
-        <h2>
+        @*<h2>
             Painting  @UserManager.GetUserAsync(User).Result.FirstName
-        </h2>
+        </h2>*@
 
         <p>
             <a asp-action="Create">Create New</a>
         </p>
         <table class="table">
             <thead>
-                <tr>
+                <tr class="paintingIndexRow">
                     @*<th>
                         @Html.DisplayNameFor(model => model.PaintingId)
                     </th>*@
@@ -56,39 +56,59 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MediumUsed)
-                        </td>
-                        <td class="col-sm-10">
-                            <img src="~/images/@item.ImagePath" style="max-height: 75px; max-width: 200px; padding:0px; margin:0 auto;" />
-                        </td>
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.ImagePath)
-                        </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.GalleryId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsSold)
-                        </td>
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.ApplicationUserId)
-                        </td>*@
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.PaintingId }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.PaintingId }) |
+                <tr>
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MediumUsed)
+                    </td>
+                    <td class="">
+                        <img src="~/images/@item.ImagePath" style="max-height: 75px; max-width: 200px; padding:0px; margin:0 auto;" />
+                    </td>
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.ImagePath)
+        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GalleryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsSold)
+                    </td>
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.ApplicationUserId)
+        </td>*@
+                    <td>
+                        @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.PaintingId })
+                        }
+
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.PaintingId }) |*@
+
+
+                        @Html.ActionLink("Details", "Details", new { id = item.PaintingId })
+
+
+                        @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
+                        {
                             @Html.ActionLink("Delete", "Delete", new { id = item.PaintingId })
-                        </td>
+                        }
+
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.PaintingId })*@
+
+                    </td>
+
+
+
+                    @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false)
+                    {
 
                         <td>
                             <form asp-controller="Orders" asp-action="Create" asp-route-id="@item.PaintingId">
@@ -96,8 +116,17 @@
 
                             </form>
                         </td>
+                    }
 
-                    </tr>
+
+                    @*<td>
+                        <form asp-controller="Orders" asp-action="Create" asp-route-id="@item.PaintingId">
+                            <input type="submit" class="btn btn-primary bg-primary border-primary" value="Add to Order" />
+
+                        </form>
+                    </td>*@
+
+                </tr>
                 }
             </tbody>
         </table>

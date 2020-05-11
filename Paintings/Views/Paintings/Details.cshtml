@@ -1,5 +1,10 @@
 ﻿@model Paintings.Models.Painting
 
+
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Details";
 }
@@ -57,8 +62,17 @@
                 </dd>*@
             </dl>
         </div>
+
+        @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.PaintingId">Edit</a>
+
+        }
+
+
+
         <div>
-            <a asp-action="Edit" asp-route-id="@Model.PaintingId">Edit</a> |
+
             <a asp-action="Index">Back to List</a>
         </div>
     </div>

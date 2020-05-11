@@ -53,16 +53,24 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Paintings" asp-action="Index">Works</a>
                             </li>
-                            <li class="nav-item">
+                            @*<li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Index">Cart</a>
-                            </li>
+                            </li>*@
+
+                            @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Orders" asp-action="Index">Cart</a>
+                                </li>
+
+                            }
 
 
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <li >
+                                <li id="Searchy">
                                     @*the name in the input must match the variable name for the controller*@
-                                    <form  asp-controller="Paintings" asp-action="Index">
+                                    <form id="Searchy" asp-controller="Paintings" asp-action="Index">
                                         <input id="Searchy" type="text" name="searchString" placeholder="Search Paintings" aria-label="Search" asp-controller="Paintings" asp-action="Index">
                                     </form>
                                 </li>

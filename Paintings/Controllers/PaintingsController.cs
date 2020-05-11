@@ -32,9 +32,9 @@ namespace Paintings.Controllers
         {
             if (string.IsNullOrWhiteSpace(searchString))
             {
-                var user = await GetCurrentUserAsync();
+                //var user = await GetCurrentUserAsync();
                 var paintings = await _context.Painting
-                    .Where(p => p.ApplicationUserId == user.Id)
+                    //.Where(p => p.ApplicationUserId == user.Id)
                     .ToListAsync();
                 return View(paintings);
             }
