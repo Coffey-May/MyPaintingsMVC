@@ -26,6 +26,7 @@ namespace Paintings.Controllers
             _context = context;
             _userManager = userManager;
         }
+
         // GET: Orders
         public async Task<ActionResult> Index()
         {
@@ -37,14 +38,11 @@ namespace Paintings.Controllers
                 .Where(o => o.ApplicationUserId == user.Id);
 
             return View(await applicationDbContext.ToListAsync());
-
-
         }
 
-        // GET: Orders/Details/5
+       // GET: Orders/Details/5
         public async Task<ActionResult> Details(int id)
         {
-
             var user = await GetCurrentUserAsync();
 
             var incompleteOrder = await _context.Order
@@ -71,12 +69,7 @@ namespace Paintings.Controllers
             }
         }
 
-
-
-
-
-
-        // GET: Orders/Create
+       // GET: Orders/Create
         public ActionResult Create()
         {
             return View();
@@ -93,7 +86,6 @@ namespace Paintings.Controllers
                 var userOrder = _context.Order.FirstOrDefault(o => o.ApplicationUser.Id == user.Id);
                 if (userOrder == null)
                 {
-                    //creates order object
                     var newOrder = new Order
                     {
                         IsComplete = false,
@@ -102,11 +94,7 @@ namespace Paintings.Controllers
                     };
                     _context.Order.Add(newOrder);
                     await _context.SaveChangesAsync();
-
-                    //pulls id from newly created Order to plug into PaintingOrder object 
                     int orderId = newOrder.OrderId;
-
-                    //adds product to order by creating PaintingOrder object
                     var newPainting = new PaintingOrder
                     {
                         OrderId = orderId,
@@ -115,12 +103,9 @@ namespace Paintings.Controllers
                     _context.PaintingOrder.Add(newPainting);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", "Orders", new { id = orderId });
-
                 }
                 else
                 {
-
-                    //creates just the order product if an order already exists
                     var newPaintingOrder = new PaintingOrder
                     {
                         OrderId = userOrder.OrderId,
@@ -137,7 +122,6 @@ namespace Paintings.Controllers
             }
 
         }
-
         // GET: Orders/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -190,7 +174,6 @@ namespace Paintings.Controllers
             ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", order.ApplicationUserId);
             return View(order);
         }
-
         private async void DeletePaintingOrder(int orderId)
         {
             var paintingOrders = await _context.PaintingOrder.Where(po => po.OrderId == orderId).ToListAsync();
@@ -200,8 +183,7 @@ namespace Paintings.Controllers
             }
         }
 
-
-        // POST: Orders/Delete/5
+       // POST: Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete()
@@ -217,10 +199,9 @@ namespace Paintings.Controllers
                 }
           
             
-                DeletePaintingOrders(order.OrderId);
+                await DeletePaintingOrders(order.OrderId);
                 _context.Order.Remove(order);
                 await _context.SaveChangesAsync();
-                //TempData["cancelOrder"] = "Your order has been canceled.";
                 return RedirectToAction("Index", "Paintings");
             }
             catch (Exception ex)
@@ -230,7 +211,7 @@ namespace Paintings.Controllers
             }
         }
 
-        private async void DeletePaintingOrders(int orderId)
+        private async Task DeletePaintingOrders (int orderId)
         {
             var paintingOrders = await _context.PaintingOrder.Where(po => po.OrderId == orderId).ToListAsync();
             foreach (var po in paintingOrders)
@@ -238,9 +219,6 @@ namespace Paintings.Controllers
                 _context.PaintingOrder.Remove(po);
             }
         }
-
-
-
 
         private bool OrderExists(int id)
         {

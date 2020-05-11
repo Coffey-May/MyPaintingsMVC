@@ -19,10 +19,6 @@
         </p>
     }
 
-
-    @*<p>
-        <a asp-action="Create">Create New</a>
-    </p>*@
     <table class="table">
         <thead>
             <tr>
@@ -48,32 +44,21 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Address)
                     </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
-                        </td>*@
-                <td>
-
+                    <td>
+                        @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
+                        {
+                             <p>
+                                <a asp-action="Edit" asp-route-id="@item.GalleryId">Edit</a>
+                             </p>
+                        }
+                    <a asp-action="Details" asp-route-id="@item.GalleryId">Details</a>
                     @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
                     {
                         <p>
-                            <a asp-action="Edit" asp-route-id="@item.GalleryId">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.GalleryId">Delete</a>
                         </p>
                     }
-
-
-
-
-                    <a asp-action="Details" asp-route-id="@item.GalleryId">Details</a>
-
-
-                    @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
-                    {
-                <p>
-                    <a asp-action="Delete" asp-route-id="@item.GalleryId">Delete</a>
-                </p>
-                    }
-                
-                </td>
+                               </td>
                 </tr>
             }
         </tbody>

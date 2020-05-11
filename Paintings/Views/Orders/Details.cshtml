@@ -13,13 +13,8 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Order.PaintingOrder)
         </dt>
-
-
-
-
     </dl>
 </div>
-
 
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -62,26 +57,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Painting.IsSold)
             </td>
-
-
             <td>
                 <form asp-controller="PaintingOrders" asp-action="Delete" asp-route-Id="@item.Painting.PaintingId" method="post">
                     <input type="submit" class="btn btn-danger bg-danger border-danger" value="DELETE" />
                 </form>
             </td>
-
         </tr>
-
-           
-
-        }
+       }
     </tbody>
-
-
 </table>
 
 
-
-@*<form asp-controller="Orders" asp-action="Delete" method="post">
-    <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
-</form>*@
