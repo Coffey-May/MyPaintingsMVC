@@ -78,7 +78,6 @@ namespace Paintings.Areas.Identity.Pages.Account
 
             returnUrl = returnUrl ?? Url.Content("~/");
 
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -94,17 +93,12 @@ namespace Paintings.Areas.Identity.Pages.Account
             {
                 var user = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Email == Input.Email && u.IsAdmin == true);
          
-
-
-
-
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Ivalid login attempt. Please make sure you are a Registered Applicant");
                     return Page();
                 }
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -128,7 +122,6 @@ namespace Paintings.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

@@ -32,8 +32,6 @@ namespace Paintings.Controllers
             return View();
         }
 
-
-
         // POST: PaintingOrders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

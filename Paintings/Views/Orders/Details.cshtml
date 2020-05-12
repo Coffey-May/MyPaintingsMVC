@@ -7,13 +7,13 @@
 <h1>Shopping Cart</h1>
 
 <div class="orderDetails">
-    <h4>Order # @Html.DisplayFor(model => model.Order.OrderId)</h4>
+    @*<h4>Order # @Html.DisplayFor(model => model.Order.OrderId)</h4>*@
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.PaintingOrder)
-        </dt>
-    </dl>
+    @*<dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Order.PaintingOrder)
+            </dt>
+        </dl>*@
 </div>
 
 <table class="table table-striped">
@@ -26,13 +26,16 @@
                 Medium
             </th>
             <th>
+                Image
+            </th>
+            <th>
                 Price
             </th>
             <th>
                 Gallery
             </th>
             <th>
-                Total Price
+                Sold
             </th>
             <th></th>
         </tr>
@@ -41,30 +44,45 @@
 
         @foreach (Paintings.Models.OrderViewModels.OrderLineItem item in Model.LineItems)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Painting.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Painting.MediumUsed)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Painting.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Painting.GalleryId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Painting.IsSold)
-            </td>
-            <td>
-                <form asp-controller="PaintingOrders" asp-action="Delete" asp-route-Id="@item.Painting.PaintingId" method="post">
-                    <input type="submit" class="btn btn-danger bg-danger border-danger" value="DELETE" />
-                </form>
-            </td>
-        </tr>
-       }
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Painting.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Painting.MediumUsed)
+                </td>
+                <td>
+                    <img src="~/images/@item.Painting.ImagePath" style="max-height: 75px; max-width: 200px; padding:0px; margin:0 auto; padding-right:1vw;" />
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => item.Painting.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Painting.GalleryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Painting.IsSold)
+                </td>
+                <td>
+                    <form asp-controller="PaintingOrders" asp-action="Delete" asp-route-Id="@item.Painting.PaintingId" method="post">
+                        <input type="submit" class="btn btn-danger bg-danger border-danger" value="DELETE" />
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<form asp-controller="Orders" asp-action="Delete" method="post">
+    <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
+</form>
+<hr />
+<form asp-controller="Paintings" asp-action="Index">
+    <input type="submit" class="btn btn-outline-info badge-secondary " value="Shop More" />
+</form>
+<hr />
+<form asp-controller="PaintingOrders" asp-action="Index">
+    <input type="submit" class="btn btn-outline-info badge-primary " value="Place Order" />
+</form>
 
 

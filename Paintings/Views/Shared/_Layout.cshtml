@@ -63,10 +63,12 @@
                             }
 
 
+                 
+
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <li >                          
-                                    <form  asp-controller="Paintings" asp-action="Index">
+                                <li>
+                                    <form asp-controller="Paintings" asp-action="Index">
                                         <input id="Searchy" type="text" name="searchString" placeholder="Search Paintings" aria-label="Search" asp-controller="Paintings" asp-action="Index">
                                     </form>
                                 </li>

@@ -28,8 +28,11 @@ namespace Paintings.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
+       
             var galleries = await _context.Gallery
-                
+
+
+
                 .ToListAsync();
             return View(galleries);
         }
@@ -39,7 +42,7 @@ namespace Paintings.Controllers
         {
             var gallery = await _context.Gallery
                
-               
+               .Include(g => g.Paintings)
                   .FirstOrDefaultAsync(g => g.GalleryId == id);
             
             if (gallery == null)

@@ -16,8 +16,8 @@ namespace Paintings.Models
         public string Name { get; set; }
         [Required]
         public string Address { get; set; }
-      
-        public List<Painting> Paintings { get; set; }
+        public int PaintingId { get; set; }
+        public virtual ICollection<Painting> Paintings { get; set; }
 
         
     }

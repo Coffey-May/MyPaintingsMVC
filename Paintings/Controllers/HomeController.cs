@@ -24,7 +24,6 @@ namespace Paintings.Controllers
             _userManager = userManager;
             _logger = logger;
         }
-
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
@@ -34,11 +33,11 @@ namespace Paintings.Controllers
             }
             return View(user);
         }
-
         public IActionResult Privacy()
         {
             return View();
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
