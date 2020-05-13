@@ -106,6 +106,26 @@ namespace Paintings.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", "Orders", new { id = orderId });
                 }
+                if(userOrder.IsComplete == true)
+                {
+                    var newOrder = new Order
+                    {
+                        IsComplete = false,
+                        DateTime = DateTime.Now,
+                        ApplicationUserId = user.Id
+                    };
+                    _context.Order.Add(newOrder);
+                    await _context.SaveChangesAsync();
+                    int orderId = newOrder.OrderId;
+                    var newPainting = new PaintingOrder
+                    {
+                        OrderId = orderId,
+                        PaintingId = id
+                    };
+                    _context.PaintingOrder.Add(newPainting);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "Orders", new { id = orderId });
+                }
                 else
                 {
                     var newPaintingOrder = new PaintingOrder

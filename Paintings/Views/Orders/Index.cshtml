@@ -36,34 +36,34 @@
                 {
                 <tr>
                     @*<td>
-                        @Html.DisplayFor(modelItem => item.OrderId)
-                    </td>*@
+            @Html.DisplayFor(modelItem => item.OrderId)
+        </td>*@
 
-                  
+
 
                     <td>
-                      Completed  @Html.DisplayFor(modelItem => item.IsComplete)
+                        Completed  @Html.DisplayFor(modelItem => item.IsComplete)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DateTime)
                     </td>
-                    <td>
-                        <a class="btn-primary" asp-action="Details" asp-route-id="@item.OrderId"> Proceed to Place Order</a>
-                    </td>
+                    @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false && item.IsComplete == true)
+                    {
+                        <td>
+                            <h4> Order is Complete</h4>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a class="btn-primary" asp-action="Details" asp-route-id="@item.OrderId"> Proceed to Place Order</a>
+                        </td>
+                    }
+
                 </tr>
                 }
             </tbody>
         </table>
-        @*<form asp-controller="Orders" asp-action="Delete" method="post">
-            <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
-        </form>
-        <hr />
-        <form asp-controller="Paintings" asp-action="Index">
-            <input type="submit" class="btn btn-outline-info badge-secondary " value="Shop More" />
-        </form>
-        <hr />
-        <form asp-controller="PaintingOrders" asp-action="Index">
-            <input type="submit" class="btn btn-outline-info badge-primary " value="Place Order" />
-        </form>*@
+      
 
     </div>

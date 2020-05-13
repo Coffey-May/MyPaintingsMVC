@@ -1,5 +1,9 @@
 ﻿@model Paintings.Models.OrderViewModels.OrderDetailViewModel
 
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
@@ -81,8 +85,15 @@
     <input type="submit" class="btn btn-outline-info badge-secondary " value="Shop More" />
 </form>
 <hr />
+
+
+@if (@UserManager.GetUserAsync(User).Result.IsAdmin == false && Model.Order.IsComplete == true)
+{
+    <h4>Order is complete</h4>
+}
+else
+{ 
 <form asp-controller="Orders" asp-action="Edit">
     <input type="submit" class="btn btn-outline-info badge-primary " value="Place Order" />
 </form>
-
-
+}
