@@ -84,8 +84,8 @@ namespace Paintings.Controllers
             try
             {
                 var user = await GetCurrentUserAsync();
-                var userOrder = _context.Order.FirstOrDefault(o => o.ApplicationUser.Id == user.Id);
-           
+                var userOrder = _context.Order.FirstOrDefault(o => o.ApplicationUser.Id == user.Id && o.IsComplete == false);
+                var chosenPainting = _context.Painting.FirstOrDefault(p => p.ApplicationUserId == user.Id && p.IsSold == false);
                 if (userOrder == null)
                 {
                     var newOrder = new Order
@@ -100,13 +100,21 @@ namespace Paintings.Controllers
                     var newPainting = new PaintingOrder
                     {
                         OrderId = orderId,
-                        PaintingId = id
+                        PaintingId = id,
                     };
                     _context.PaintingOrder.Add(newPainting);
                     await _context.SaveChangesAsync();
+                    //if (chosenPainting.IsSold == false)
+                    //{
+
+                     
+ 
+                    //};
+
+
                     return RedirectToAction("Details", "Orders", new { id = orderId });
                 }
-                if(userOrder.IsComplete == true)
+                if (userOrder.IsComplete == true)
                 {
                     var newOrder = new Order
                     {
@@ -121,12 +129,13 @@ namespace Paintings.Controllers
                     {
                         OrderId = orderId,
                         PaintingId = id
+
                     };
                     _context.PaintingOrder.Add(newPainting);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", "Orders", new { id = orderId });
                 }
-                else
+                else 
                 {
                     var newPaintingOrder = new PaintingOrder
                     {
@@ -179,9 +188,11 @@ namespace Paintings.Controllers
                 {
                     var user = await GetCurrentUserAsync();
                     var userCurrentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == false);
-                 
+                    //var chosenPainting = _context.Painting.FirstOrDefault(p => p.ApplicationUserId == user.Id && p.IsSold == false);
+                    //chosenPainting.IsSold = true;
+
                     userCurrentOrder.IsComplete = true;
-            
+                    //_context.Update(chosenPainting);
                     _context.Update(userCurrentOrder);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

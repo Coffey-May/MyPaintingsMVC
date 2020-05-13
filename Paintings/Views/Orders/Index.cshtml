@@ -9,61 +9,69 @@
 @{
     ViewData["Title"] = "Index";
 }
-    <div class="container">
-        <h1>Your Order</h1>
+<div class="container">
+    <h1>Your Order</h1>
 
-        <p>
-            @*<a asp-action="Create">Create New</a>*@
-        </p>
-        <table class="table">
-            <thead>
-                <tr>
-                    @*<th>
-                        @Html.DisplayNameFor(model => model.OrderId)
-                    </th>*@
-                    <th>
-                        Order status
-                    </th>
-                    <th>
-                       Creation Date
-                    </th>
+    <p>
+        @*<a asp-action="Create">Create New</a>*@
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+              
+                <th>
+                    Order status
+                </th>
+                <th>
+                    Creation Date
+                </th>
 
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+
+                <td>
+                    Completed : @Html.DisplayFor(modelItem => item.IsComplete)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false && item.IsComplete == true)
                 {
-                <tr>
-                    @*<td>
-            @Html.DisplayFor(modelItem => item.OrderId)
-        </td>*@
-
-
-
                     <td>
-                        Completed  @Html.DisplayFor(modelItem => item.IsComplete)
+                        <h4> Order is Complete</h4>
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateTime)
-                    </td>
-                    @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false && item.IsComplete == true)
-                    {
-                        <td>
-                            <h4> Order is Complete</h4>
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            <a class="btn-primary" asp-action="Details" asp-route-id="@item.OrderId"> Proceed to Place Order</a>
-                        </td>
-                    }
 
-                </tr>
                 }
-            </tbody>
-        </table>
-      
+                else
+                {
+                    <td>
+                        <a class="btn-primary" asp-action="Details" asp-route-id="@item.OrderId"> Proceed to Place Order</a>
+                    </td>
+                }
+                @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false && item.IsComplete == false)
+                {
+                    <td>
+                        <form asp-controller="Orders" asp-action="Delete" method="post">
+                            <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
+                        </form>
+                    </td>
 
-    </div>
+                }
+
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+
+</div>
+
+
