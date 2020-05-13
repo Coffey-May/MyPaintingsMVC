@@ -7,6 +7,8 @@ using Paintings.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Paintings.Controllers
 {
@@ -21,9 +23,13 @@ namespace Paintings.Controllers
             _context = context;
         }
         // GET: PaintingOrders
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var user = await GetCurrentUserAsync();
+            var paintingOrders = await _context.PaintingOrder
+                .ToListAsync();
+
+            return View(paintingOrders);
         }
 
         // GET: PaintingOrders/Details/5
@@ -40,14 +46,18 @@ namespace Paintings.Controllers
             try
             {
                 var user = await GetCurrentUserAsync();
-                var userCurrentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == null);
+                var userCurrentOrder =  _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == false);
+                //userCurrentOrder.IsComplete = true;
                 if (userCurrentOrder != null)
+
                 {
-                    var newPaintingOrder = new PaintingOrder
+                   var newPaintingOrder = new PaintingOrder
                     {
                         OrderId = userCurrentOrder.OrderId,
-                        PaintingId = id
+                        PaintingId = id,
                     };
+                    
+                  
                     _context.PaintingOrder.Add(newPaintingOrder);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Index", "Orders");
@@ -85,13 +95,29 @@ namespace Paintings.Controllers
         // POST: PaintingOrders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                var user = await GetCurrentUserAsync();
+                //var currentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == false);
+                var userCurrentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == false);
+                userCurrentOrder.IsComplete = true;
+                if (userCurrentOrder != null)
+                {
 
-                return RedirectToAction(nameof(Index));
+                    var newPaintingOrder = new PaintingOrder
+                    {
+                        OrderId = userCurrentOrder.OrderId,
+                        PaintingId = id,
+                    };
+                    _context.PaintingOrder.Update(newPaintingOrder);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Orders");
+
+                }
+
+                    return RedirectToAction(nameof(Index));
             }
             catch
             {

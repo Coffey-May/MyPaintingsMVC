@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200508143919_init4.cs" />
     <Compile Remove="Migrations\20200508143919_init4.Designer.cs" />
+    <Compile Remove="Migrations\20200512192542_init53.cs" />
+    <Compile Remove="Migrations\20200512192542_init53.Designer.cs" />
+    <Compile Remove="Migrations\20200513135101_init55.cs" />
+    <Compile Remove="Migrations\20200513135101_init55.Designer.cs" />
+    <Compile Remove="Migrations\20200513135538_init56.cs" />
+    <Compile Remove="Migrations\20200513135538_init56.Designer.cs" />
   </ItemGroup>
 
 

@@ -31,11 +31,12 @@ namespace Paintings.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
-
+         
             var applicationDbContext = _context.Order
 
              .Include(o => o.ApplicationUser)
                 .Where(o => o.ApplicationUserId == user.Id);
+
 
             return View(await applicationDbContext.ToListAsync());
         }
@@ -84,6 +85,7 @@ namespace Paintings.Controllers
             {
                 var user = await GetCurrentUserAsync();
                 var userOrder = _context.Order.FirstOrDefault(o => o.ApplicationUser.Id == user.Id);
+           
                 if (userOrder == null)
                 {
                     var newOrder = new Order
@@ -110,6 +112,7 @@ namespace Paintings.Controllers
                     {
                         OrderId = userOrder.OrderId,
                         PaintingId = id
+                     
                     };
                     _context.PaintingOrder.Add(newPaintingOrder);
                     await _context.SaveChangesAsync();
@@ -143,19 +146,25 @@ namespace Paintings.Controllers
         // POST: Orders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,DateCreated,DateCompleted,UserId,PaymentTypeId")] Order order)
+        public async Task<IActionResult> Edit(int id, Order order)
         {
             if (id != order.OrderId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(order);
+                    var user = await GetCurrentUserAsync();
+                    var userCurrentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == false);
+                 
+                    userCurrentOrder.IsComplete = true;
+            
+                    _context.Update(userCurrentOrder);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -168,7 +177,8 @@ namespace Paintings.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Orders");
             }
           
             ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", order.ApplicationUserId);

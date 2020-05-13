@@ -10,7 +10,7 @@ namespace Paintings.Models
     {
         [Key]
         public int PaintingOrderId { get; set; }
-        public int? PaintingId { get; set; }
+        public int PaintingId { get; set; }
         public int OrderId { get; set; }
         public Order Order { get; set; }
         public Painting Painting { get; set; }

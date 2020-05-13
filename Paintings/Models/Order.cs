@@ -10,9 +10,10 @@ namespace Paintings.Models
     {
         [Key]
         public int OrderId { get; set; }
-        public bool IsComplete { get; set; }
+        public bool? IsComplete { get; set; }
         public DateTime DateTime { get; set; }
-     
+       
+        //public int PaintingOrderId { get; set; }
         public List<PaintingOrder> PaintingOrder { get; set; }
 
         [Required]
