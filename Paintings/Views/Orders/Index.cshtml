@@ -50,7 +50,10 @@
                 else
                 {
                     <td>
-                        <a class="btn-primary" asp-action="Details" asp-route-id="@item.OrderId"> Proceed to Place Order</a>
+                        <a class="btn-secondary" asp-action="Details" asp-route-id="@item.OrderId">View Order</a>
+                    </td>
+                    <td>
+                        <a class="btn-primary" asp-action="Details" asp-route-id="@item.OrderId">Continue to Place Order</a>
                     </td>
                 }
                 @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false && item.IsComplete == false)
@@ -62,6 +65,14 @@
                     </td>
 
                 }
+                <td>
+                    @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
+                    {
+                        <p>
+                            <a asp-controller="Orders" asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                        </p>
+                    }
+                </td>
 
             </tr>
             }

@@ -20,19 +20,23 @@
                         @Html.DisplayNameFor(model => model.Title)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.MediumUsed)
+                        Medium 
+                        @*@Html.DisplayNameFor(model => model.MediumUsed)*@
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ImagePath)
+                        Image
+                        @*@Html.DisplayNameFor(model => model.ImagePath)*@
                     </th>
                     <th>
                         Gallery
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Price)
+                        Price
+                        @*@Html.DisplayNameFor(model => model.Price)*@
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.IsSold)
+                        Sold
+                        @*@Html.DisplayNameFor(model => model.IsSold)*@
                     </th>
                     <th></th>
                 </tr>
@@ -55,10 +59,13 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Price)
-                    </td>               
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.IsSold)
                     </td>
+
+
+
                     <td>
                         @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
                         {
@@ -73,15 +80,28 @@
                         }
                     </td>
 
-                   @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false)
+                    @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false)
                     {
 
-                        <td>
-                            <form asp-controller="Orders" asp-action="Create" asp-route-id="@item.PaintingId">
-                                <input type="submit" class="btn btn-primary bg-primary border-primary" value="Add to Order" />
 
-                            </form>
-                        </td>
+                        @if (item.IsSold == false)
+                        {
+
+                            <td>
+                                <form asp-controller="Orders" asp-action="Create" asp-route-id="@item.PaintingId">
+                                    <input type="submit" class="btn btn-primary bg-primary border-primary" value="Add to Order" />
+
+                                </form>
+                            </td>
+                        }
+                        else
+                        {
+                           <td>
+                               <h4>Item Has Sold.</h4>
+                           </td>
+                        }
+
+
                     }
                 </tr>
                 }

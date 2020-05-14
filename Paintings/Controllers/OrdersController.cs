@@ -35,7 +35,7 @@ namespace Paintings.Controllers
             var applicationDbContext = _context.Order
 
              .Include(o => o.ApplicationUser)
-                .Where(o => o.ApplicationUserId == user.Id);
+                .Where(o => o.ApplicationUserId == user.Id || user.IsAdmin == true);
 
 
             return View(await applicationDbContext.ToListAsync());
@@ -189,10 +189,11 @@ namespace Paintings.Controllers
                     var user = await GetCurrentUserAsync();
                     var userCurrentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == false);
                     //var chosenPainting = _context.Painting.FirstOrDefault(p => p.ApplicationUserId == user.Id && p.IsSold == false);
-                    //chosenPainting.IsSold = true;
+                    var chosenPainting = _context.Painting.FirstOrDefault(p => p.IsSold == false);
+                    chosenPainting.IsSold = true;
 
                     userCurrentOrder.IsComplete = true;
-                    //_context.Update(chosenPainting);
+                    _context.Update(chosenPainting);
                     _context.Update(userCurrentOrder);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

@@ -51,8 +51,21 @@
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.IsSold)
                 </dd>
+
             </dl>
         </div>
+        @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false)
+        {
+
+            <td>
+                <form asp-controller="Orders" asp-action="Create" asp-route-id="@Model.PaintingId">
+                    <input type="submit" class="btn btn-primary bg-primary border-primary" value="Add to Order" />
+
+                </form>
+            </td>
+        }
+
+
 
         @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
         {
