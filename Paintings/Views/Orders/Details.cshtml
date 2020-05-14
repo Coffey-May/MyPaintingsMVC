@@ -84,6 +84,7 @@
 <form asp-controller="Paintings" asp-action="Index">
     <input type="submit" class="btn btn-outline-info badge-secondary " value="Shop More" />
 </form>
+
 <hr />
 
 
@@ -93,7 +94,10 @@
 }
 else
 { 
-<form asp-controller="Orders" asp-action="Edit">
+<form asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.Order.OrderId">
+    <div class=" form-group">
+        <input type="hidden" asp-for="@Model.Order.OrderId" value="@Model.Order.OrderId"/>
     <input type="submit" class="btn btn-outline-info badge-primary " value="Place Order" />
+    </div>
 </form>
 }

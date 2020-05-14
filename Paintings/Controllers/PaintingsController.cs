@@ -121,7 +121,8 @@ namespace Paintings.Controllers
             var painting = await _context.Painting.FirstOrDefaultAsync(p => p.PaintingId == id);
             var loggedInUser = await GetCurrentUserAsync();
 
-            if(painting.ApplicationUserId != loggedInUser.Id)
+            //if(painting.ApplicationUserId != loggedInUser.Id)
+                if(loggedInUser.IsAdmin != true)
             {
                 return NotFound();
             }

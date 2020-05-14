@@ -156,22 +156,22 @@ namespace Paintings.Controllers
 
         }
         // GET: Orders/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<ActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var order = await _context.Order.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+        //    var order = await _context.Order.FindAsync(id);
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", order.ApplicationUserId);
-            return View(order);
-        }
+        //    ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", order.ApplicationUserId);
+        //    return View(order);
+        //}
 
         // POST: Orders/Edit/5
         [HttpPost]
@@ -187,14 +187,24 @@ namespace Paintings.Controllers
             {
                 try
                 {
-                    var user = await GetCurrentUserAsync();
-                    var userCurrentOrder = _context.Order.Where(o => o.ApplicationUserId == user.Id).FirstOrDefault(o => o.IsComplete == false);
-                    //var chosenPainting = _context.Painting.FirstOrDefault(p => p.ApplicationUserId == user.Id && p.IsSold == false);
-                    var chosenPainting = _context.Painting.FirstOrDefault(p => p.IsSold == false);
-                    chosenPainting.IsSold = true;
 
+        
+                    var userCurrentOrder = await _context.Order.Where(o => o.OrderId == id)
+                        .Include(o => o.PaintingOrder).ThenInclude(o => o.Painting).FirstOrDefaultAsync();
+                
+                    foreach (var p in userCurrentOrder.PaintingOrder)
+                    {
+                        if (p.Painting.IsSold == false )
+                        {
+                           p.Painting.IsSold = true;
+                            _context.Update(p);
+                        }
+
+                    }
+
+                    await _context.SaveChangesAsync();
                     userCurrentOrder.IsComplete = true;
-                    _context.Update(chosenPainting);
+                  
                     _context.Update(userCurrentOrder);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
