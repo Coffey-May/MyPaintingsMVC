@@ -20,7 +20,7 @@
         @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false)
         {
             <p>
-                <a asp-controller="Order" asp-action=" Index">View Cart</a>
+                <a asp-controller="Orders" >View Cart</a>
             </p>
         }
 

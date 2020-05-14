@@ -1,5 +1,13 @@
 ﻿@model Paintings.Models.Gallery
 
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+
+
 @{
     ViewData["Title"] = "Details";
 }
@@ -24,25 +32,25 @@
             </dd>
 
             <dt class="col-sm-2">
-            Now Showing
-        </dt>
+                Now Showing
+            </dt>
 
 
             @foreach (var item in Model.Paintings)
             {
 
 
-        <dd style="border:.5px solid gray; padding:10px; margin:10px;" class="">
+                <dd style="border:.5px solid gray; padding:10px; margin:10px;" class="">
 
-            @Html.DisplayFor(modelItem => item.Title)
-            <br />
-            @Html.DisplayFor(modelItem => item.MediumUsed)
-            <br />
-            <img src="~/images/@item.ImagePath" style="max-height: 75px; max-width: 200px; padding:0px; margin:0 auto; padding-right:1vw;" />
-        </dd>
-               
-                   
-                
+                    @Html.DisplayFor(modelItem => item.Title)
+                    <br />
+                    @Html.DisplayFor(modelItem => item.MediumUsed)
+                    <br />
+                    <img src="~/images/@item.ImagePath" style="max-height: 75px; max-width: 200px; padding:0px; margin:0 auto; padding-right:1vw;" />
+                </dd>
+
+
+
 
             }
 
@@ -54,7 +62,10 @@
         </dl>
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.GalleryId">Edit</a> |
+        @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.GalleryId">Edit</a> 
+        }
         <a asp-action="Index">Back to List</a>
     </div>
 </div>
