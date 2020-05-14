@@ -83,6 +83,7 @@ namespace Paintings.Controllers
         {
             try
             {
+                var selectedPaintingOrder = _context.PaintingOrder.FirstOrDefault(po => po.PaintingId != 0);
                 var user = await GetCurrentUserAsync();
                 var userOrder = _context.Order.FirstOrDefault(o => o.ApplicationUser.Id == user.Id && o.IsComplete == false);
                 var chosenPainting = _context.Painting.FirstOrDefault(p => p.ApplicationUserId == user.Id && p.IsSold == false);
@@ -234,7 +235,7 @@ namespace Paintings.Controllers
             {
                 var user = await GetCurrentUserAsync();
                 var order = await _context.Order
-                   .Where(o => o.ApplicationUserId == user.Id).FirstOrDefaultAsync(o => o.IsComplete == false);
+                   .Where(o => o.ApplicationUserId == user.Id || user.IsAdmin == true).FirstOrDefaultAsync(o => o.IsComplete == false || user.IsAdmin == true);
                 if (order == null)
                 {
                     return RedirectToAction("Index", "Paintings");

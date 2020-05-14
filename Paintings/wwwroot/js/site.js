@@ -18,3 +18,22 @@ function carousel() {
     x[myIndex - 1].style.display = "block";
     setTimeout(carousel, 4000); // Change image every 2 seconds
 }
+
+
+$(document).ready(function () {
+    $('.helloWorld').on('click', function () {
+        $.ajax({
+            url: '@(Url.Action("Index", "Paintings"))',
+            type: 'post',
+            data: {
+                Value1: 'Value1'
+               
+            },
+            success: function (result) {
+                //for redirect
+                window.location = "url";
+         
+            }
+        });
+    });
+});

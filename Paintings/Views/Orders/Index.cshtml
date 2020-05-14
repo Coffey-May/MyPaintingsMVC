@@ -35,7 +35,15 @@
             <tr>
 
                 <td>
-                    Completed : @Html.DisplayFor(modelItem => item.IsComplete)
+                    @*Completed : @Html.DisplayFor(modelItem => item.IsComplete)*@
+                    @if (item.IsComplete == true)
+                    {
+                        <h6>Placed</h6>
+                    }
+                    else
+                    {
+                        <h6>Open</h6>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateTime)
@@ -47,13 +55,17 @@
                     </td>
 
                 }
-                else
+                else 
                 {
                     <td>
-                        <a class="btn-secondary" asp-action="Details" asp-route-id="@item.OrderId">View Order</a>
+                        <form>
+                            <a class="btn border-secondary bg-secondary  btn-secondary" asp-action="Details" asp-route-id="@item.OrderId">View Order</a>
+                        </form>
                     </td>
                     <td>
-                        <a class="btn-primary" asp-action="Details" asp-route-id="@item.OrderId">Continue to Place Order</a>
+                        <form>
+                            <a class=" btn border-primary btn-primary bg-primary" asp-action="Details" asp-route-id="@item.OrderId">Continue to Place Order</a>
+                        </form>
                     </td>
                 }
                 @if (@UserManager.GetUserAsync(User).Result.IsAdmin == false && item.IsComplete == false)
@@ -68,13 +80,17 @@
                 <td>
                     @if (@UserManager.GetUserAsync(User).Result.IsAdmin == true)
                     {
-                        <p>
-                            <a asp-controller="Orders" asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-                        </p>
-                    }
-                </td>
 
-            </tr>
+                    <p>
+                        <form asp-controller="Orders" asp-action="Delete" method="post">
+                            <input type="submit" class="btn btn-danger bg-danger border-danger" value="Cancel Order" />
+                        </form>
+                    </p>
+
+                }
+                    </td>
+
+                </tr>
             }
         </tbody>
     </table>
