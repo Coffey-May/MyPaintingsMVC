@@ -66,7 +66,28 @@
                             <img src="~/images/@item.ImagePath" style="max-height: 75px; max-width: 200px; padding:0px; margin:0 auto;" />
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.GalleryId)
+                            @*@Html.DisplayFor(modelItem => item.GalleryId)*@
+
+                            @if (@item.GalleryId == 1)
+                            {
+                                <h6>Plus One Gallery</h6><br />
+                                <p>Madrid, Spain</p>
+                            }
+                            else if (@item.GalleryId == 2)
+                            {
+                                <h6>Tate Modern</h6><br />
+                                <p>London, UK</p>
+                            }
+                            else if (item.GalleryId == 3)
+                            {
+                                <h6>Louis K. Meisel Gallery</h6><br />
+                                <p>Manhattan, New York City</p>
+                            }
+                            else
+                            {
+                                <h6>Private Collection</h6>
+                               
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Price)

@@ -202,7 +202,7 @@ h1, h2, h3, p, a, h4, td, th {
 
 @-webkit-keyframes color-change {
     0% {
-        color: rgb(255, 241, 252);
+        color: rgb(255, 241, 253);
     }
 
     50% {
