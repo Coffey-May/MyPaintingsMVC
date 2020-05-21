@@ -1,4 +1,4 @@
-# Paitnings
+# Paintings
 Paintings is an e-commerce app used to showcase and sell oil paintings
 
 ## Installation
